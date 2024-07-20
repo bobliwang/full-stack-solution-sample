@@ -68,11 +68,19 @@ dotnet new sln -n "$solutionName" -o "$srcFolder"
 
 New-ClassLib -ProjectName "$solutionName.Domain.Core"     -ProjectFolder "$libsFolder" -NullableDisable $true
 $corePrjFilePath = "$libsFolder/$solutionName.Domain.Core/$solutionName.Domain.Core.csproj"
+mkdir "$libsFolder/$solutionName.Domain.Core/DTOs"
 
 New-ClassLib -ProjectName "$solutionName.ApiClient"       -ProjectFolder "$libsFolder" -NullableDisable $true
 $apiClientPrjFilePath = "$libsFolder/$solutionName.ApiClient/$solutionName.ApiClient.csproj"
 dotnet add $apiClientPrjFilePath reference $corePrjFilePath
 dotnet add $apiClientPrjFilePath reference "ext_libs/Tangsem.WebApiClient.Extensions"
+
+dotnet new mstest -o "$libsFolder/$SolutionName.ApiClient.Tests"
+$apiClientTestPrjFilePath = "$libsFolder/$SolutionName.ApiClient.Tests/$SolutionName.ApiClient.Tests.csproj"
+dotnet add $apiClientTestPrjFilePath reference $apiClientPrjFilePath
+Disable-Nullable("$apiClientTestPrjFilePath")
+dotnet sln "$srcFolder/$SolutionName.sln" add $apiClientTestPrjFilePath
+
 
 # write readme.md in the project folder
 "
@@ -85,9 +93,10 @@ dotnet add $apiClientPrjFilePath reference "ext_libs/Tangsem.WebApiClient.Extens
 New-ClassLib -ProjectName "$solutionName.Domain.Entities" -ProjectFolder "$libsFolder" -NullableDisable $true
 
 "
-# $solutionName.ApiClient
+# $solutionName.Entities
 - Entities can be manually created or generated.
 " > "$libsFolder/$solutionName.Domain.Entities/README.md"
+
 
 
 # in "$solutionName.Domain.Entities", add project ref to "$solutionName.Domain.Core"
@@ -128,6 +137,12 @@ dotnet add $svcIntegrationPrjFilePath reference ext_libs\Tangsem.Tooling\Tangsem
 dotnet new webapi -o "$webAppsFolder/$solutionName.WebApi"
 $webApiPrjFilePath = "$webAppsFolder/$solutionName.WebApi/$solutionName.WebApi.csproj"
 Disable-Nullable($webApiPrjFilePath)
+
+
+"
+global using $SolutionName.Domain.Core;
+global using $SolutionName.Domain.Entities;
+" > "$webAppsFolder/$solutionName.WebApi/GlobalUsings.cs"
 
 dotnet sln "$srcFolder/$SolutionName.sln" add $webApiPrjFilePath
 dotnet add $webApiPrjFilePath reference $svcIntegrationPrjFilePath
