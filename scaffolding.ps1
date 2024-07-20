@@ -8,6 +8,13 @@ mkdir $libsFolder
 $srvFolder = "$srcFolder/srvs"
 mkdir $srvFolder
 
+
+$webAppsFolder = "$srcFolder/web"
+mkdir $webAppsFolder
+
+$toolingFolder = "$srcFolder/tooling"
+mkdir $toolingFolder
+
 function New-ClassLib {
     param (
       [string]$ProjectName,
@@ -60,9 +67,10 @@ function Disable-Nullable {
 dotnet new sln -n "$solutionName" -o "$srcFolder"
 
 New-ClassLib -ProjectName "$solutionName.Domain.Core"     -ProjectFolder "$libsFolder" -NullableDisable $true
+$corePrjFilePath = "$libsFolder/$solutionName.Domain.Core/$solutionName.Domain.Core.csproj"
 
 New-ClassLib -ProjectName "$solutionName.ApiClient"       -ProjectFolder "$libsFolder" -NullableDisable $true
-dotnet add "$libsFolder/$solutionName.ApiClient/$solutionName.ApiClient.csproj" reference "$libsFolder/$solutionName.Domain.Core/$solutionName.Domain.Core.csproj"
+dotnet add "$libsFolder/$solutionName.ApiClient/$solutionName.ApiClient.csproj" reference $corePrjFilePath
 
 # write readme.md in the project folder
 "
@@ -74,47 +82,59 @@ dotnet add "$libsFolder/$solutionName.ApiClient/$solutionName.ApiClient.csproj" 
 # entities shared
 New-ClassLib -ProjectName "$solutionName.Domain.Entities" -ProjectFolder "$libsFolder" -NullableDisable $true
 
+"
+# $solutionName.ApiClient
+- Entities can be manually created or generated.
+" > "$libsFolder/$solutionName.Domain.Entities/README.md"
+
+
 # in "$solutionName.Domain.Entities", add project ref to "$solutionName.Domain.Core"
-dotnet add "$libsFolder/$solutionName.Domain.Entities/$solutionName.Domain.Entities.csproj" reference "$libsFolder/$solutionName.Domain.Core/$solutionName.Domain.Core.csproj"
-dotnet add "$libsFolder/$solutionName.Domain.Entities/$solutionName.Domain.Entities.csproj" package Microsoft.EntityFrameworkCore --version 8.0.4
+$entitiesPrjFilePath = "$libsFolder/$solutionName.Domain.Entities/$solutionName.Domain.Entities.csproj"
+dotnet add $entitiesPrjFilePath reference $corePrjFilePath
+dotnet add $entitiesPrjFilePath package Microsoft.EntityFrameworkCore --version 8.0.4
 
 # entities repo
 New-ClassLib -ProjectName "$solutionName.Domain.Repositories" -ProjectFolder "$libsFolder" -NullableDisable $true
-dotnet add "$libsFolder/$solutionName.Domain.Repositories/$solutionName.Domain.Repositories.csproj" package Npgsql --version 8.0.3
-dotnet add "$libsFolder/$solutionName.Domain.Repositories/$solutionName.Domain.Repositories.csproj" reference "$libsFolder/$solutionName.Domain.Entities/$solutionName.Domain.Entities.csproj"
+
+$repoPrjFilePath = "$libsFolder/$solutionName.Domain.Repositories/$solutionName.Domain.Repositories.csproj"
+dotnet add $repoPrjFilePath package Npgsql --version 8.0.3
+dotnet add $repoPrjFilePath reference $entitiesPrjFilePath
 
 # entities postgres
 New-ClassLib -ProjectName "$solutionName.Domain.Entities.Postgres" -ProjectFolder "$libsFolder" -NullableDisable $true
-dotnet add "$libsFolder/$solutionName.Domain.Entities.Postgres/$solutionName.Domain.Entities.Postgres.csproj" package Npgsql --version 8.0.3
-dotnet add "$libsFolder/$solutionName.Domain.Entities.Postgres/$solutionName.Domain.Entities.Postgres.csproj" reference "$libsFolder/$solutionName.Domain.Repositories/$solutionName.Domain.Repositories.csproj"
+$postgresEntitiesPrjFilePath = "$libsFolder/$solutionName.Domain.Entities.Postgres/$solutionName.Domain.Entities.Postgres.csproj"
+dotnet add $postgresEntitiesPrjFilePath package Npgsql --version 8.0.3
+dotnet add $postgresEntitiesPrjFilePath reference $repoPrjFilePath
 
 # entities sqlite
 New-ClassLib -ProjectName "$solutionName.Domain.Entities.Sqlite" -ProjectFolder "$libsFolder" -NullableDisable $true
-dotnet add "$libsFolder/$solutionName.Domain.Entities.Sqlite/$solutionName.Domain.Entities.Sqlite.csproj" package Microsoft.EntityFrameworkCore.Sqlite --version 8.0.6
-dotnet add "$libsFolder/$solutionName.Domain.Entities.Sqlite/$solutionName.Domain.Entities.Sqlite.csproj" reference "$libsFolder/$solutionName.Domain.Repositories/$solutionName.Domain.Repositories.csproj"
-
+$sqliteEntitiesPrjFilePath = "$libsFolder/$solutionName.Domain.Entities.Sqlite/$solutionName.Domain.Entities.Sqlite.csproj"
+dotnet add $sqliteEntitiesPrjFilePath package Microsoft.EntityFrameworkCore.Sqlite --version 8.0.6
+dotnet add $sqliteEntitiesPrjFilePath reference $repoPrjFilePath
 
 New-ClassLib -ProjectName "$solutionName.Domain.Srv.Services" -ProjectFolder "$srvFolder" -NullableDisable $true
 $svcPrjFilePath = "$srvFolder/$solutionName.Domain.Srv.Services/$solutionName.Domain.Srv.Services.csproj"
-dotnet add $svcPrjFilePath reference "$libsFolder/$solutionName.Domain.Entities.Postgres/$solutionName.Domain.Entities.Postgres.csproj"
-dotnet add $svcPrjFilePath reference "$libsFolder/$solutionName.Domain.Entities.Sqlite/$solutionName.Domain.Entities.Sqlite.csproj"
-
+dotnet add $svcPrjFilePath reference $postgresEntitiesPrjFilePath
+dotnet add $svcPrjFilePath reference $sqliteEntitiesPrjFilePath
 
 New-ClassLib -ProjectName "$solutionName.Domain.Srv.Services.Integrations" -ProjectFolder "$srvFolder" -NullableDisable $true
 $svcIntegrationPrjFilePath = "$srvFolder/$solutionName.Domain.Srv.Services.Integrations/$solutionName.Domain.Srv.Services.Integrations.csproj"
 dotnet add $svcIntegrationPrjFilePath reference $svcPrjFilePath
-
-$webAppsFolder = "$srcFolder/web"
-mkdir $webAppsFolder
 
 
 dotnet new webapi -o "$webAppsFolder/$solutionName.WebApi"
 $webApiPrjFilePath = "$webAppsFolder/$solutionName.WebApi/$solutionName.WebApi.csproj"
 Disable-Nullable($webApiPrjFilePath)
 
-
 dotnet sln "$srcFolder/$SolutionName.sln" add $webApiPrjFilePath
 dotnet add $webApiPrjFilePath reference $svcIntegrationPrjFilePath
 
-dotnet build "$srcFolder/$solutionName.sln"
+
+# tooling
+dotnet new mstest -o "$toolingFolder/$SolutionName.CodeGen.Toolbox"
+$codegenToolboxPrjFilePath = "$toolingFolder/$SolutionName.CodeGen.Toolbox/$SolutionName.CodeGen.Toolbox.csproj"
+dotnet add $codegenToolboxPrjFilePath reference $corePrjFilePath
+dotnet add $codegenToolboxPrjFilePath reference $entitiesPrjFilePath
+
+dotnet build "$srcFolder/$SolutionName.sln"
 # dotnet watch run --project "src\web\CostTracker.WebApi\CostTracker.WebApi.csproj"
