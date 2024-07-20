@@ -133,8 +133,13 @@ dotnet add $webApiPrjFilePath reference $svcIntegrationPrjFilePath
 # tooling
 dotnet new mstest -o "$toolingFolder/$SolutionName.CodeGen.Toolbox"
 $codegenToolboxPrjFilePath = "$toolingFolder/$SolutionName.CodeGen.Toolbox/$SolutionName.CodeGen.Toolbox.csproj"
+dotnet sln "$srcFolder/$SolutionName.sln" add $codegenToolboxPrjFilePath
+Disable-Nullable($codegenToolboxPrjFilePath)
 dotnet add $codegenToolboxPrjFilePath reference $corePrjFilePath
 dotnet add $codegenToolboxPrjFilePath reference $entitiesPrjFilePath
+"
+ApiClient code gen: REF to D:\git-temp\image-search\web-api\ImageSearch.Tools.App\CodeGeneratorsRunner.cs
+" > "$toolingFolder/$SolutionName.CodeGen.Toolbox/README.md"
 
 dotnet build "$srcFolder/$SolutionName.sln"
 # dotnet watch run --project "src\web\CostTracker.WebApi\CostTracker.WebApi.csproj"
