@@ -1,0 +1,47 @@
+<mxfile host="app.diagrams.net" modified="2024-07-20T01:32:25.427Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" etag="hs6GvJ2RfG_48_bo_Oy9" version="24.6.5" type="device">
+  <diagram name="Page-1" id="T-5c9_Jg1xLuCXx0Tzoy">
+    <mxGraphModel dx="2261" dy="2002" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="9JPhJ6l9FO8VI9NhxwpV-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="OjmZdUqFbXoYHoFdufgh-3" target="QE24Ka6zPnA1IW45yydu-2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="OjmZdUqFbXoYHoFdufgh-3" value="{projectName}.Domain&lt;div&gt;&lt;div&gt;- EF Mapping&lt;/div&gt;&lt;/div&gt;&lt;div&gt;- DbContextBase [gen]&lt;/div&gt;&lt;div&gt;- RepositoryBase &lt;span style=&quot;background-color: initial;&quot;&gt;[gen]&lt;/span&gt;&lt;/div&gt;&lt;div&gt;- RepositoryBase Extensions&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="60" y="-10" width="240" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="OjmZdUqFbXoYHoFdufgh-4" value="{projectName}.Domain.Core&lt;div&gt;- Services interfaces&lt;/div&gt;&lt;div&gt;- Services extensions&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;- Models + DTOs interfaces&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;- Models + DTOs extensions&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;- Shared Utils&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="240" y="-450" width="210" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="OjmZdUqFbXoYHoFdufgh-5" value="{projectName}.Domain.Services" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="520" y="130" width="210" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="OjmZdUqFbXoYHoFdufgh-6" value="{projectName}.Integration" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="530" y="220" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="9JPhJ6l9FO8VI9NhxwpV-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="OjmZdUqFbXoYHoFdufgh-7" target="OjmZdUqFbXoYHoFdufgh-3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="OjmZdUqFbXoYHoFdufgh-7" value="{projectName}.Domain.{SQLImpl:postgres, sqlite etc}&lt;div&gt;- Vendor specific Entities&lt;br&gt;&lt;div&gt;- EF Mapping (extended)&lt;/div&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="60" y="140" width="240" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="9JPhJ6l9FO8VI9NhxwpV-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=1.016;entryY=0.444;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="9JPhJ6l9FO8VI9NhxwpV-1" target="OjmZdUqFbXoYHoFdufgh-4" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="640" y="-208" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9JPhJ6l9FO8VI9NhxwpV-1" value="{projectName}.ApiClient" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="550" y="-280" width="220" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="QE24Ka6zPnA1IW45yydu-2" value="{projectName}.Domain.Entities&lt;div&gt;- Entity Extensions&lt;br&gt;&lt;/div&gt;&lt;div&gt;- DTO:Entity mappings&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-100" y="-310" width="240" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="QE24Ka6zPnA1IW45yydu-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=-0.005;entryY=0.47;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="QE24Ka6zPnA1IW45yydu-2" target="OjmZdUqFbXoYHoFdufgh-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
