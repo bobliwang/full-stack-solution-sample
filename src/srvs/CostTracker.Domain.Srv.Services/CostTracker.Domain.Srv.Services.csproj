@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\..\libs\CostTracker.Domain.Entities.Postgres\CostTracker.Domain.Entities.Postgres.csproj" />
+    <ProjectReference Include="..\..\libs\CostTracker.Domain.Entities.Sqlite\CostTracker.Domain.Entities.Sqlite.csproj" />
+  </ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+</Project>

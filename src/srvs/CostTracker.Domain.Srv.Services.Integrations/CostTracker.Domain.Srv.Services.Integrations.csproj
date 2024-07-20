@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\CostTracker.Domain.Srv.Services\CostTracker.Domain.Srv.Services.csproj" />
+    <ProjectReference Include="..\..\..\ext_libs\Tangsem.Tooling\Tangsem.Tooling.csproj" />
+  </ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+</Project>
