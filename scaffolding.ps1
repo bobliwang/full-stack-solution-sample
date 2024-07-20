@@ -70,7 +70,9 @@ New-ClassLib -ProjectName "$solutionName.Domain.Core"     -ProjectFolder "$libsF
 $corePrjFilePath = "$libsFolder/$solutionName.Domain.Core/$solutionName.Domain.Core.csproj"
 
 New-ClassLib -ProjectName "$solutionName.ApiClient"       -ProjectFolder "$libsFolder" -NullableDisable $true
-dotnet add "$libsFolder/$solutionName.ApiClient/$solutionName.ApiClient.csproj" reference $corePrjFilePath
+$apiClientPrjFilePath = "$libsFolder/$solutionName.ApiClient/$solutionName.ApiClient.csproj"
+dotnet add $apiClientPrjFilePath reference $corePrjFilePath
+dotnet add $apiClientPrjFilePath reference "ext_libs/Tangsem.WebApiClient.Extensions"
 
 # write readme.md in the project folder
 "
@@ -120,6 +122,7 @@ dotnet add $svcPrjFilePath reference $sqliteEntitiesPrjFilePath
 New-ClassLib -ProjectName "$solutionName.Domain.Srv.Services.Integrations" -ProjectFolder "$srvFolder" -NullableDisable $true
 $svcIntegrationPrjFilePath = "$srvFolder/$solutionName.Domain.Srv.Services.Integrations/$solutionName.Domain.Srv.Services.Integrations.csproj"
 dotnet add $svcIntegrationPrjFilePath reference $svcPrjFilePath
+dotnet add $svcIntegrationPrjFilePath reference ext_libs\Tangsem.Tooling\Tangsem.Tooling.csproj
 
 
 dotnet new webapi -o "$webAppsFolder/$solutionName.WebApi"
