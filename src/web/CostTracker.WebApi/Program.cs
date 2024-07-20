@@ -1,4 +1,6 @@
 using CostTracker.Domain.Core.DTOs;
+using CostTracker.Domain.Entities.Sqlite;
+using CostTracker.WebApi.Endpoints;
 using Tangsem.Tooling.CodeGen.ApiClient;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +9,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSingleton(sp =>
+{
+    var dbCtx = CostTrackerDbContextSqlite.FromMemory();
+    dbCtx.Database.EnsureCreated();
+
+    return dbCtx;
+});
 
 var app = builder.Build();
 
@@ -38,6 +47,8 @@ app.MapGet("/weatherforecast", () =>
 })
 .WithName("GetWeatherForecast")
 .WithOpenApi();
+
+new InvoiceCapturesEndpoints().RegisterEndpoints(app);
 
 app.ConfigWebApiCodeGenEndpoint();
 

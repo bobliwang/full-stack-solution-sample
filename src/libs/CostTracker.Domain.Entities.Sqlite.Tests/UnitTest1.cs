@@ -8,7 +8,7 @@ public class UnitTest1
   [TestMethod]
   public async Task TestMethod1()
   {
-    var db = CostTrackerDbContextBaseSqlite.FromMemory();
+    var db = CostTrackerDbContextSqlite.FromMemory();
     await db.Database.EnsureCreatedAsync();
 
     var invoicesCount = await db.InvoiceCaptures.CountAsync();

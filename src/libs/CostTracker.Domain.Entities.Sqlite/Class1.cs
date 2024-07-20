@@ -4,9 +4,9 @@ using Microsoft.Extensions.Logging;
 
 namespace CostTracker.Domain.Entities.Sqlite;
 
-public class CostTrackerDbContextBaseSqlite(string connString) : CostTrackerDbContextBase(connString)
+public class CostTrackerDbContextSqlite(string connString) : CostTrackerDbContextBase(connString)
 {
-  public static CostTrackerDbContextBaseSqlite FromMemory()
+  public static CostTrackerDbContextSqlite FromMemory()
     => new (connString: "DataSource=file::memory:?cache=shared");
 
   /// <summary>
