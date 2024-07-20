@@ -82,6 +82,28 @@ Disable-Nullable("$apiClientTestPrjFilePath")
 dotnet sln "$srcFolder/$SolutionName.sln" add $apiClientTestPrjFilePath
 
 
+$ApiTestClassName = $SolutionName + "ApiClientTests"
+$ApiClientClassName = $SolutionName + "ApiClient"
+"
+namespace $SolutionName.ApiClient.Tests;
+
+[TestClass]
+public class $ApiTestClassName
+{
+  [TestMethod]
+  public async Task GetWeatherForecast_Test()
+  {
+    var result = await new $ApiClientClassName(new HttpClient
+    {
+      BaseAddress = new Uri(""http://localhost:5066/"")
+    }).GetWeatherForecast_Async();
+
+    Assert.AreNotEqual(result.Length, 0);
+  }
+}
+" > "$libsFolder/$SolutionName.ApiClient.Tests/$ApiTestClassName.cs"
+
+
 # write readme.md in the project folder
 "
 # $solutionName.ApiClient
